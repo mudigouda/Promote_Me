@@ -1,0 +1,2 @@
+import {validateCampaignDraft} from "./campaign-builder";
+export function validateCampaignRequest(input:Record<string,unknown>){return validateCampaignDraft({name:String(input.name||""),channel:String(input.channel||""),templateId:input.templateId?String(input.templateId):undefined,audienceId:input.audienceId?String(input.audienceId):undefined,scheduledAt:input.scheduledAt?String(input.scheduledAt):undefined});}
