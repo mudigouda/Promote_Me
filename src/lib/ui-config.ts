@@ -1,0 +1,1 @@
+export const uiConfig={mobileFirst:true,breakpoints:{mobile:640,tablet:768,desktop:1024},features:{dashboard:true,campaignBuilder:true,contact360:true,inbox:true,analytics:true,businessFinder:true,documents:true,settings:true}};
