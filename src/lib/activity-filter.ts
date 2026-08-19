@@ -1,0 +1,1 @@
+export function filterActivity<T extends {type?:string;at?:Date}>(items:T[],type?:string,from?:Date,to?:Date){return items.filter(x=>(!type||x.type===type)&&(!from||!x.at||x.at>=from)&&(!to||!x.at||x.at<=to));}
