@@ -1,0 +1,1 @@
+export function normalizeE164(phone:string,countryCode="+91"){const p=phone.trim().replace(/[^\d+]/g,"");if(p.startsWith("+"))return p;if(p.startsWith("00"))return `+${p.slice(2)}`;return `${countryCode}${p.replace(/^0+/,'')}`;}
