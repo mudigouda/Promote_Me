@@ -1,0 +1,2 @@
+export type DocumentRecord={id:string;name:string;mimeType:string;sizeBytes:number;ownerId?:string;createdAt:Date};
+export function createDocument(input:Partial<DocumentRecord>):DocumentRecord{return {id:input.id||crypto.randomUUID(),name:String(input.name||"").trim(),mimeType:input.mimeType||"application/octet-stream",sizeBytes:Math.max(0,Number(input.sizeBytes||0)),ownerId:input.ownerId,createdAt:new Date()};}
