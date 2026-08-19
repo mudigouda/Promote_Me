@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+export async function GET(req:NextRequest){const businessId=req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;if(!businessId)return NextResponse.json({error:"businessId is required"},{status:400});const deals=await prisma.deal.findMany({where:{businessId}});const won=deals.filter(d=>d.stage==="WON");const open=deals.filter(d=>!['WON','LOST'].includes(d.stage));return NextResponse.json({revenue:won.reduce((s,d)=>s+d.value,0),wonDeals:won.length,openPipeline:open.reduce((s,d)=>s+d.value,0),conversionRate:deals.length?won.length/deals.length:0});}
