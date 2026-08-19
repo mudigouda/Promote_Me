@@ -2,153 +2,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-}
+datasource db { provider = "postgresql" }
 
-enum Role {
-  OWNER
-  ADMIN
-  MARKETING
-  SALES
-  SUPPORT
-  VIEWER
-}
-
-model User {
-  id String @id @default(cuid())
-  email String @unique
-  name String?
-  passwordHash String
-  createdAt DateTime @default(now())
-  memberships Membership[]
-  sessions Session[]
-}
-
-model Business {
-  id String @id @default(cuid())
-  name String
-  createdAt DateTime @default(now())
-  memberships Membership[]
-  contacts Contact[]
-  campaigns Campaign[]
-  accounts ChannelAccount[]
-}
-
-model Membership {
-  id String @id @default(cuid())
-  userId String
-  businessId String
-  role Role @default(VIEWER)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  @@unique([userId, businessId])
-  @@index([businessId])
-}
-
-model Session {
-  id String @id @default(cuid())
-  userId String
-  tokenHash String @unique
-  expiresAt DateTime
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  @@index([userId])
-}
-
-model Contact {
-  id String @id @default(cuid())
-  businessId String
-  phone String?
-  email String?
-  firstName String?
-  lastName String?
-  company String?
-  city String?
-  region String?
-  country String?
-  postalCode String?
-  lat Float?
-  lng Float?
-  consent Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  campaigns CampaignContact[]
-  @@index([businessId])
-  @@index([phone])
-  @@index([email])
-  @@index([city, region])
-}
-
-model Campaign {
-  id String @id @default(cuid())
-  businessId String
-  name String
-  channel String
-  status String @default("draft")
-  scheduledAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  contacts CampaignContact[]
-  @@index([businessId])
-}
-
-model CampaignContact {
-  id String @id @default(cuid())
-  campaignId String
-  contactId String
-  status String @default("queued")
-  sentAt DateTime?
-  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  @@unique([campaignId, contactId])
-}
-
-model ChannelAccount {
-  id String @id @default(cuid())
-  businessId String
-  channel String
-  name String
-  externalId String?
-  secretEncrypted String?
-  enabled Boolean @default(true)
-  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  @@index([businessId])
-}
-
-model Conversation {
-  id String @id @default(cuid())
-  businessId String
-  contactId String?
-  channel String
-  externalId String?
-  status String @default("open")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([businessId])
-}
-
-model Automation {
-  id String @id @default(cuid())
-  businessId String
-  name String
-  trigger String
-  action String
-  enabled Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([businessId])
-}
-
-model AuditLog {
-  id String @id @default(cuid())
-  businessId String
-  userId String?
-  action String
-  metadata Json?
-  createdAt DateTime @default(now())
-  @@index([businessId])
-}
+enum Role { OWNER ADMIN MARKETING SALES SUPPORT VIEWER }
+model User { id String @id @default(cuid()) email String @unique name String? passwordHash String createdAt DateTime @default(now()) memberships Membership[] sessions Session[] assignedContacts Contact[] }
+model Business { id String @id @default(cuid()) name String createdAt DateTime @default(now()) memberships Membership[] contacts Contact[] campaigns Campaign[] accounts ChannelAccount[] }
+model Membership { id String @id @default(cuid()) userId String businessId String role Role @default(VIEWER) user User @relation(fields:[userId],references:[id],onDelete:Cascade) business Business @relation(fields:[businessId],references:[id],onDelete:Cascade) createdAt DateTime @default(now()) contacts Contact[] @@unique([userId,businessId]) @@index([businessId]) }
+model Session { id String @id @default(cuid()) userId String tokenHash String @unique expiresAt DateTime user User @relation(fields:[userId],references:[id],onDelete:Cascade) createdAt DateTime @default(now()) @@index([userId]) }
+model Contact { id String @id @default(cuid()) businessId String assignedToMembershipId String? phone String? email String? firstName String? lastName String? company String? city String? region String? country String? postalCode String? lat Float? lng Float? consent Boolean @default(false) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt business Business @relation(fields:[businessId],references:[id],onDelete:Cascade) assignedToMembership Membership? @relation(fields:[assignedToMembershipId],references:[id],onDelete:SetNull) campaigns CampaignContact[] @@index([businessId]) @@index([phone]) @@index([email]) @@index([city,region]) @@index([assignedToMembershipId]) }
+model Campaign { id String @id @default(cuid()) businessId String name String channel String message String @default("") status String @default("draft") scheduledAt DateTime? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt business Business @relation(fields:[businessId],references:[id],onDelete:Cascade) contacts CampaignContact[] @@index([businessId]) }
+model CampaignContact { id String @id @default(cuid()) campaignId String contactId String status String @default("queued") sentAt DateTime? campaign Campaign @relation(fields:[campaignId],references:[id],onDelete:Cascade) contact Contact @relation(fields:[contactId],references:[id],onDelete:Cascade) @@unique([campaignId,contactId]) }
+model ChannelAccount { id String @id @default(cuid()) businessId String channel String name String externalId String? secretEncrypted String? enabled Boolean @default(true) business Business @relation(fields:[businessId],references:[id],onDelete:Cascade) @@index([businessId]) }
+model Conversation { id String @id @default(cuid()) businessId String contactId String? channel String externalId String? status String @default("open") createdAt DateTime @default(now()) updatedAt DateTime @updatedAt @@index([businessId]) }
+model Automation { id String @id @default(cuid()) businessId String name String trigger String action String enabled Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt @@index([businessId]) }
+model AuditLog { id String @id @default(cuid()) businessId String userId String? action String metadata Json? createdAt DateTime @default(now()) @@index([businessId]) }
