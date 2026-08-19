@@ -1,0 +1,2 @@
+export type CampaignDraft={name:string;channel:string;templateId?:string;audienceId?:string;scheduledAt?:string};
+export function validateCampaignDraft(c:CampaignDraft){const errors:string[]=[];if(!c.name.trim())errors.push("name is required");if(!c.channel)errors.push("channel is required");if(!c.templateId)errors.push("template is required");if(!c.audienceId)errors.push("audience is required");return errors;}
