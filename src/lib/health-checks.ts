@@ -1,0 +1,1 @@
+export async function checkProviders(){const names=["WHATSAPP","EMAIL","SMS","META","X"];return names.map(name=>({name,configured:Boolean(process.env[`${name}_API_KEY`]||process.env[`${name}_ACCESS_TOKEN`])}));}
