@@ -1,3 +1,34 @@
-import {NextResponse} from 'next/server';import {prisma} from '../../../../../src/lib/prisma';
-export async function GET(request:Request){const url=new URL(request.url);const mode=url.searchParams.get('hub.mode');const token=url.searchParams.get('hub.verify_token');const challenge=url.searchParams.get('hub.challenge');if(mode==='subscribe'&&token&&challenge){const expected=process.env.WHATSAPP_VERIFY_TOKEN;if(expected&&token===expected)return new Response(challenge,{status:200});}return NextResponse.json({error:'Webhook verification failed'},{status:403});}
-export async function POST(request:Request){try{const body=await request.json();const entries=Array.isArray(body?.entry)?body.entry:[];for(const entry of entries){const changes=Array.isArray(entry?.changes)?entry.changes:[];for(const change of changes){const value=change?.value;const messages=Array.isArray(value?.messages)?value.messages:[];const externalId=value?.metadata?.phone_number_id;if(!externalId)continue;const account=await prisma.channelAccount.findFirst({where:{externalId,channel:'whatsapp',enabled:true}});if(!account)continue;for(const msg of messages){const phone=msg?.from;if(!phone)continue;let contact=await prisma.contact.findFirst({where:{businessId:account.businessId,phone}});if(!contact)contact=await prisma.contact.create({data:{businessId:account.businessId,phone,consent:true}});const conversationId=`wa_${account.businessId}_${phone}`;await prisma.conversation.upsert({where:{id:conversationId},create:{id:conversationId,businessId:account.businessId,contactId:contact.id,channel:'whatsapp',externalId:phone,status:'open'},update:{contactId:contact.id,status:'open'}});}}}return NextResponse.json({ok:true});}catch{return NextResponse.json({error:'Invalid webhook payload'},{status:400});}}
+import { NextResponse } from 'next/server';
+import { prisma } from '../../../../src/lib/prisma';
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const mode = url.searchParams.get('hub.mode');
+  const token = url.searchParams.get('hub.verify_token');
+  const challenge = url.searchParams.get('hub.challenge');
+  if (mode === 'subscribe' && token && challenge && process.env.WHATSAPP_VERIFY_TOKEN === token) return new Response(challenge, { status: 200 });
+  return NextResponse.json({ error: 'Webhook verification failed' }, { status: 403 });
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const entries = Array.isArray(body?.entry) ? body.entry : [];
+    for (const entry of entries) for (const change of Array.isArray(entry?.changes) ? entry.changes : []) {
+      const value = change?.value;
+      const externalId = value?.metadata?.phone_number_id;
+      if (!externalId) continue;
+      const account = await prisma.channelAccount.findFirst({ where: { externalId, channel: 'whatsapp', enabled: true } });
+      if (!account) continue;
+      for (const msg of Array.isArray(value?.messages) ? value.messages : []) {
+        const phone = msg?.from;
+        if (!phone) continue;
+        let contact = await prisma.contact.findFirst({ where: { businessId: account.businessId, phone } });
+        if (!contact) contact = await prisma.contact.create({ data: { businessId: account.businessId, phone, consent: true } });
+        const conversationId = `wa_${account.businessId}_${phone}`;
+        await prisma.conversation.upsert({ where: { id: conversationId }, create: { id: conversationId, businessId: account.businessId, contactId: contact.id, channel: 'whatsapp', externalId: phone, status: 'open' }, update: { contactId: contact.id, status: 'open' } });
+      }
+    }
+    return NextResponse.json({ ok: true });
+  } catch { return NextResponse.json({ error: 'Invalid webhook payload' }, { status: 400 }); }
+}
