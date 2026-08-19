@@ -1,0 +1,2 @@
+import {BusinessResult} from "./business-finder";
+export function businessCsv(items:BusinessResult[]){const esc=(v:unknown)=>`"${String(v??"").replace(/"/g,'""')}"`;const header=["Business Name","Address","Phone","Category","Latitude","Longitude","Source"];const rows=items.map(x=>[x.name,x.address,x.phone,x.category,x.latitude,x.longitude,x.source].map(esc).join(","));return [header.join(","),...rows].join("\n");}
