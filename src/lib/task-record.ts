@@ -1,0 +1,2 @@
+export type TaskRecord={id:string;title:string;contactId?:string;leadId?:string;dealId?:string;assigneeId?:string;priority:"LOW"|"MEDIUM"|"HIGH"|"URGENT";status:"OPEN"|"DONE";dueAt?:Date;createdAt:Date;updatedAt:Date};
+export function createTask(input:Partial<TaskRecord>):TaskRecord{const now=new Date();return {id:input.id||crypto.randomUUID(),title:String(input.title||"").trim(),contactId:input.contactId,leadId:input.leadId,dealId:input.dealId,assigneeId:input.assigneeId,priority:input.priority||"MEDIUM",status:"OPEN",dueAt:input.dueAt,createdAt:now,updatedAt:now};}
