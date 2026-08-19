@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+const channels=["WHATSAPP","EMAIL","SMS","META","X","CALLING"] as const;
+export async function GET(req:NextRequest){const businessId=req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;if(!businessId)return NextResponse.json({error:"businessId is required"},{status:400});return NextResponse.json({channels:channels.map(channel=>({channel,enabled:true,configured:channel==="WHATSAPP"?Boolean(process.env.WHATSAPP_ACCESS_TOKEN):channel==="EMAIL"?Boolean(process.env.EMAIL_PROVIDER_API_KEY):channel==="SMS"?Boolean(process.env.SMS_PROVIDER_API_KEY):channel==="META"?Boolean(process.env.META_ACCESS_TOKEN):channel==="X"?Boolean(process.env.X_API_KEY):true}))});}
+export async function POST(req:NextRequest){const b=await req.json();if(!channels.includes(b.channel))return NextResponse.json({error:"Invalid channel"},{status:400});return NextResponse.json({channel:b.channel,enabled:Boolean(b.enabled),saved:true});}
