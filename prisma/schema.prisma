@@ -4,10 +4,16 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-enum Role { OWNER ADMIN MARKETING SALES SUPPORT VIEWER }
+enum Role {
+  OWNER
+  ADMIN
+  MARKETING
+  SALES
+  SUPPORT
+  VIEWER
+}
 
 model User {
   id String @id @default(cuid())
