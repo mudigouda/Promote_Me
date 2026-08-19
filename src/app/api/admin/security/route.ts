@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+export async function GET(){return NextResponse.json({settings:{requireCampaignApproval:true,requireConsent:true,blockOptedOut:true,sessionTimeoutMinutes:60,auditLogging:true}});}
+export async function POST(req:NextRequest){const body=await req.json();return NextResponse.json({settings:{requireCampaignApproval:Boolean(body.requireCampaignApproval),requireConsent:Boolean(body.requireConsent),blockOptedOut:Boolean(body.blockOptedOut),sessionTimeoutMinutes:Number(body.sessionTimeoutMinutes||60),auditLogging:body.auditLogging!==false},saved:true});}
