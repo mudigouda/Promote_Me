@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+const idFor=(req:NextRequest)=>req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;
+export async function GET(req:NextRequest){const id=idFor(req);if(!id)return NextResponse.json({error:"businessId is required"},{status:400});const rows=await prisma.campaign.findMany({where:{businessId:id},include:{metrics:true,_count:{select:{contacts:true}}},orderBy:{createdAt:"desc"}});return NextResponse.json(rows)}
+export async function POST(req:NextRequest){const b=await req.json();const id=b.businessId||process.env.DEFAULT_BUSINESS_ID;if(!id||!b.name||!b.channel)return NextResponse.json({error:"businessId, name and channel are required"},{status:400});const row=await prisma.campaign.create({data:{businessId:id,name:b.name,channel:b.channel,message:b.message||"",status:b.scheduledAt?"scheduled":"draft",scheduledAt:b.scheduledAt?new Date(b.scheduledAt):undefined}});return NextResponse.json(row,{status:201})}
