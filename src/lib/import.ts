@@ -1,0 +1,2 @@
+export function mapImportRow(row:Record<string,unknown>){return {name:String(row.name||row.Name||""),phone:String(row.phone||row.Phone||""),email:String(row.email||row.Email||""),company:String(row.company||row.Company||"")};}
+export function dedupeImported<T extends {phone?:string;email?:string}>(rows:T[]){const seen=new Set<string>();return rows.filter(r=>{const k=(r.phone||r.email||"").toLowerCase();if(!k||seen.has(k))return false;seen.add(k);return true;});}
