@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { prisma } from "../../../src/lib/prisma";
+import { currentMembership } from "../../../src/lib/tenant";
+export async function POST(request:Request){const ctx=await currentMembership();if(!ctx)return NextResponse.redirect(new URL('/login',request.url));const f=await request.formData();await prisma.contact.create({data:{businessId:ctx.businessId,firstName:String(f.get('firstName')||'').trim()||null,lastName:String(f.get('lastName')||'').trim()||null,company:String(f.get('company')||'').trim()||null,phone:String(f.get('phone')||'').trim()||null,email:String(f.get('email')||'').trim()||null,city:String(f.get('city')||'').trim()||null,region:String(f.get('region')||'').trim()||null,country:String(f.get('country')||'').trim()||null}});return NextResponse.redirect(new URL('/contacts',request.url));}
