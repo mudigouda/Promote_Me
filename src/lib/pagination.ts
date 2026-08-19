@@ -1,0 +1,1 @@
+export function paginate<T>(items:T[],page=1,pageSize=25){const size=Math.min(Math.max(pageSize,1),100);const current=Math.max(page,1);const start=(current-1)*size;return {items:items.slice(start,start+size),page:current,pageSize:size,total:items.length,totalPages:Math.ceil(items.length/size)};}
