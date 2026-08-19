@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+const roles={OWNER:["*"],ADMIN:["crm","campaigns","inbox","calls","settings","team"],MANAGER:["crm","campaigns","inbox","calls"],AGENT:["crm","inbox","calls"],VIEWER:["crm:read"]};
+export async function GET(req:NextRequest){const businessId=req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;if(!businessId)return NextResponse.json({error:"businessId is required"},{status:400});return NextResponse.json({roles,users:await prisma.user.findMany({where:{businessId},select:{id:true,name:true,email:true,role:true}})});}
+export async function POST(req:NextRequest){const b=await req.json(),businessId=b.businessId||process.env.DEFAULT_BUSINESS_ID;if(!businessId||!b.email||!b.role)return NextResponse.json({error:"businessId, email and role are required"},{status:400});if(!(b.role in roles))return NextResponse.json({error:"Invalid role"},{status:400});const user=await prisma.user.create({data:{businessId,email:b.email,name:b.name||b.email,role:b.role,status:"INVITED"}});return NextResponse.json({user},{status:201});}
