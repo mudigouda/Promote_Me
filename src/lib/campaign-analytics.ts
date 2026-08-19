@@ -1,0 +1,2 @@
+export type DeliveryEvent="sent"|"delivered"|"read"|"clicked"|"replied"|"converted"|"failed";
+export function summarize(events:DeliveryEvent[]){const count=(e:DeliveryEvent)=>events.filter(x=>x===e).length;const sent=count("sent");return {sent,delivered:count("delivered"),read:count("read"),clicked:count("clicked"),replied:count("replied"),converted:count("converted"),failed:count("failed"),deliveryRate:sent?count("delivered")/sent:0,replyRate:sent?count("replied")/sent:0,conversionRate:sent?count("converted")/sent:0};}
