@@ -1,0 +1,1 @@
+export async function api<T>(input:RequestInfo|URL,init?:RequestInit):Promise<T>{const res=await fetch(input,init);const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"Request failed");return data as T;}
