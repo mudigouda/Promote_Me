@@ -1,0 +1,1 @@
+export function paginateBusinesses<T>(items:T[],page=1,pageSize=50){const size=Math.min(500,Math.max(1,pageSize));const current=Math.max(1,page);const start=(current-1)*size;return {items:items.slice(start,start+size),page:current,pageSize:size,total:items.length,totalPages:Math.ceil(items.length/size)};}
