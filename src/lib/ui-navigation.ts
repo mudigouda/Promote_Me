@@ -1,0 +1,1 @@
+export const navigation=[{label:"Dashboard",href:"/"},{label:"Contacts",href:"/contacts"},{label:"Leads",href:"/leads"},{label:"Campaigns",href:"/campaigns"},{label:"Inbox",href:"/inbox"},{label:"Calls",href:"/calls"},{label:"Business Finder",href:"/business-finder"},{label:"Documents",href:"/documents"},{label:"Analytics",href:"/analytics"},{label:"Settings",href:"/settings"}];
