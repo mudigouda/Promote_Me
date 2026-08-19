@@ -1,0 +1,2 @@
+export type ScoreInput={consent?:boolean;hasPhone?:boolean;hasEmail?:boolean;engagements?:number;replies?:number;dealsWon?:number};
+export function scoreContact(x:ScoreInput){let score=0;if(x.consent)score+=20;if(x.hasPhone)score+=15;if(x.hasEmail)score+=10;score+=Math.min(20,(x.engagements||0)*2);score+=Math.min(20,(x.replies||0)*5);score+=Math.min(15,(x.dealsWon||0)*15);return Math.min(100,score);}
