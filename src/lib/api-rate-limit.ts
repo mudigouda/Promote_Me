@@ -1,0 +1,1 @@
+export class RateLimiter{private counts=new Map<string,{count:number;at:number}>();constructor(private limit=60,private windowMs=60000){}allow(key:string,now=Date.now()){const x=this.counts.get(key);if(!x||now-x.at>=this.windowMs){this.counts.set(key,{count:1,at:now});return true;}if(x.count>=this.limit)return false;x.count++;return true;}}
