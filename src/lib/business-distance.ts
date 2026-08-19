@@ -1,0 +1,1 @@
+export function haversineKm(a:{latitude:number;longitude:number},b:{latitude:number;longitude:number}){const r=Math.PI/180;const dLat=(b.latitude-a.latitude)*r;const dLon=(b.longitude-a.longitude)*r;const x=Math.sin(dLat/2)**2+Math.cos(a.latitude*r)*Math.cos(b.latitude*r)*Math.sin(dLon/2)**2;return 6371*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
