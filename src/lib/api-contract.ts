@@ -1,3 +1,4 @@
-export type ApiResponse<T>={data:T;error?:never;meta?:Record<string,unknown>}|{data?:never;error:{code:string;message:string};meta?:Record<string,unknown>};
-export function ok<T>(data:T,meta?:Record<string,unknown>):ApiResponse<T>{return {data,meta};}
-export function fail(code:string,message:string):ApiResponse<never>{return {error:{code,message}};}
+export type ApiMeta={page?:number;pageSize?:number;total?:number;requestId?:string};
+export type ApiResponse<T>={data:T;error?:never;meta?:ApiMeta}|{data?:never;error:{code:string;message:string};meta?:ApiMeta};
+export function ok<T>(data:T,meta?:ApiMeta):ApiResponse<T>{return {data,meta};}
+export function fail(code:string,message:string,meta?:ApiMeta):ApiResponse<never>{return {error:{code,message},meta};}
