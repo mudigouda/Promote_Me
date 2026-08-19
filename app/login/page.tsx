@@ -1,4 +1,13 @@
 'use client';
-import {useState} from 'react';
-import {useRouter} from 'next/navigation';
-export default function Login(){const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [error,setError]=useState('');const router=useRouter();function submit(e:React.FormEvent){e.preventDefault();setError('');if(!email||!password){setError('Enter email and password.');return}localStorage.setItem('promote_me_session','demo');router.push('/dashboard')}return <main className="auth"><section className="auth-card"><div className="brand auth-brand">Promote<span>_Me</span></div><h1>Welcome back</h1><p>Sign in to your marketing workspace.</p><form onSubmit={submit}><label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@company.com"/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••"/></label>{error&&<div className="error">{error}</div>}<button className="primary auth-submit">Sign in</button></form><a className="signup-button" href="/signup">Create a new account</a><p className="auth-foot">New to Promote_Me? <a href="/signup">Sign up</a></p></section></main>}
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function Login() {
+  const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [error,setError]=useState(''); const [loading,setLoading]=useState(false); const router=useRouter();
+  async function submit(e:React.FormEvent){
+    e.preventDefault(); setError(''); setLoading(true);
+    try { const res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})}); const data=await res.json(); if(!res.ok){setError(data.error||'Unable to sign in.'); return;} router.push('/dashboard'); router.refresh(); }
+    catch { setError('Unable to connect to the server.'); } finally { setLoading(false); }
+  }
+  return <main className="auth"><section className="auth-card"><div className="brand auth-brand">Promote<span>_Me</span></div><h1>Welcome back</h1><p>Sign in to your marketing workspace.</p><form onSubmit={submit}><label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@company.com" autoComplete="email" required/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" required/></label>{error&&<div className="error">{error}</div>}<button className="primary auth-submit" disabled={loading}>{loading?'Signing in…':'Sign in'}</button></form><a className="signup-button" href="/signup">Create a new account</a><p className="auth-foot">New to Promote_Me? <a href="/signup">Sign up</a></p></section></main>;
+}
