@@ -1,0 +1,1 @@
+export function containsSearch<T>(rows:T[],fields:(keyof T)[],query:string){const q=query.trim().toLowerCase();return !q?rows:rows.filter(x=>fields.some(f=>String(x[f]??"").toLowerCase().includes(q)));}
