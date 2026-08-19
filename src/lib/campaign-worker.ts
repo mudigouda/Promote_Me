@@ -1,0 +1,3 @@
+import { getAdapter, Channel } from "@/lib/integrations/adapter";
+import { pending, markSending, markSent, markFailed } from "@/lib/campaign-queue";
+export async function processQueue(limit=50){const items=pending().slice(0,limit);const results=[];for(const item of items){markSending(item);try{const result=await getAdapter(item.channel as Channel).send({to:item.to,body:item.body});if(result.accepted){markSent(item);results.push({item,status:"sent"});}else{markFailed(item);results.push({item,status:"failed",error:result.error});}}catch(error){markFailed(item);results.push({item,status:"failed",error:String(error)});}}return {processed:results.length,results};}
