@@ -1,0 +1,1 @@
+export function searchText<T extends Record<string,unknown>>(items:T[],query:string,fields:string[]){const q=query.trim().toLowerCase();if(!q)return items;return items.filter(item=>fields.some(field=>String(item[field]??"").toLowerCase().includes(q)));}
