@@ -1,0 +1,1 @@
+export function renderTemplate(template:string,data:Record<string,unknown>){return template.replace(/\{\{\s*([\w.]+)\s*\}\}/g,(_,key)=>String(key.split(".").reduce((v:any,k:string)=>v?.[k],data)??""));}
