@@ -1,0 +1,2 @@
+import {ContactRecord,normalizeContact} from "./contact-record";
+export function createContact(input:Partial<ContactRecord>):ContactRecord{const now=new Date();return {id:input.id||crypto.randomUUID(),name:normalizeContact(input).name||"",email:input.email?.trim().toLowerCase(),phone:input.phone?.trim(),company:input.company?.trim(),ownerId:input.ownerId,source:input.source,createdAt:now,updatedAt:now};}
