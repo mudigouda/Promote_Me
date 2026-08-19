@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getAdapter, Channel } from "@/lib/integrations/adapter";
+export async function POST(req:NextRequest){const b=await req.json();if(!b.channel||!b.to||!b.body)return NextResponse.json({error:"channel, to and body are required"},{status:400});const channel=b.channel as Channel;if(!["WHATSAPP","EMAIL","SMS","META","X"].includes(channel))return NextResponse.json({error:"Unsupported channel"},{status:400});const result=await getAdapter(channel).send({to:b.to,body:b.body,subject:b.subject,mediaUrl:b.mediaUrl});return NextResponse.json(result,{status:result.accepted?202:409});}
