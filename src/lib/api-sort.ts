@@ -1,0 +1,1 @@
+export function sortRows<T>(rows:T[],field:keyof T,direction:"asc"|"desc"="asc"){return [...rows].sort((a,b)=>{const av=String(a[field]??"");const bv=String(b[field]??"");return (av>bv?1:av<bv?-1:0)*(direction==="asc"?1:-1);});}
