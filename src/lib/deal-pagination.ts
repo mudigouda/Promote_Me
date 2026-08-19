@@ -1,0 +1,1 @@
+export function paginateDeals<T>(rows:T[],page=1,size=25){const s=Math.max(1,Math.min(500,size)),p=Math.max(1,page);return {items:rows.slice((p-1)*s,p*s),page:p,pageSize:s,total:rows.length,totalPages:Math.ceil(rows.length/s)};}
