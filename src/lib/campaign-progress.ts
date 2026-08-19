@@ -1,0 +1,2 @@
+import {CampaignRecipient} from "./campaign-recipient";
+export function campaignProgress(items:CampaignRecipient[]){const total=items.length;const sent=items.filter(x=>x.status==="SENT").length;const failed=items.filter(x=>x.status==="FAILED").length;const suppressed=items.filter(x=>x.status==="SUPPRESSED").length;return {total,sent,failed,suppressed,pending:total-sent-failed-suppressed,percent:total?Math.round(((sent+failed+suppressed)/total)*100):0};}
