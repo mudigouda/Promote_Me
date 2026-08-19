@@ -1,0 +1,1 @@
+export function nextLeadAction(stage:string){const map:Record<string,string>={NEW:"CONTACT",CONTACTED:"FOLLOW_UP",QUALIFIED:"CREATE_DEAL",PROPOSAL:"FOLLOW_UP",NEGOTIATION:"CALL",WON:"REQUEST_REFERRAL",LOST:"REMARKET"};return map[stage]||"REVIEW";}
