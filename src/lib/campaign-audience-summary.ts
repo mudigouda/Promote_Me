@@ -1,0 +1,1 @@
+export function audienceSummary(contacts:Array<{consent?:boolean;optedOut?:boolean}>){const total=contacts.length;const eligible=contacts.filter(x=>x.consent&&!x.optedOut).length;return {total,eligible,excluded:total-eligible};}
