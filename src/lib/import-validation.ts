@@ -1,0 +1,2 @@
+export type ImportIssue={row:number;field:string;message:string};
+export function validateContactImport(rows:Array<Record<string,unknown>>){const issues:ImportIssue[]=[];rows.forEach((r,i)=>{if(!String(r.name||"").trim())issues.push({row:i+1,field:"name",message:"Name is required"});if(!r.phone&&!r.email)issues.push({row:i+1,field:"contact",message:"Phone or email is required"});});return issues;}
