@@ -1,0 +1,2 @@
+import {DealRecord,normalizeDeal} from "./deal-record";
+export function createDeal(input:Partial<DealRecord>):DealRecord{const now=new Date();const x=normalizeDeal(input);return {id:input.id||crypto.randomUUID(),contactId:String(input.contactId||""),name:x.name||"",stage:input.stage||"OPEN",value:x.value||0,probability:x.probability||0,ownerId:input.ownerId,expectedClose:input.expectedClose,createdAt:now,updatedAt:now};}
