@@ -1,0 +1,1 @@
+export class CrmStore<T extends {id:string}>{private rows=new Map<string,T>();list(){return [...this.rows.values()];}get(id:string){return this.rows.get(id)||null;}save(row:T){this.rows.set(row.id,row);return row;}delete(id:string){return this.rows.delete(id);}clear(){this.rows.clear();}}
