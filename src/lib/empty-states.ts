@@ -1,0 +1,1 @@
+export const emptyStates={contacts:"No contacts yet",leads:"No leads yet",campaigns:"No campaigns yet",inbox:"No conversations yet",calls:"No calls yet",documents:"No documents yet",notifications:"You're all caught up"};
