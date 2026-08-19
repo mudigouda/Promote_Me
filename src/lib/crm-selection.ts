@@ -1,0 +1,1 @@
+export class SelectionStore{private ids=new Set<string>();toggle(id:string){this.ids.has(id)?this.ids.delete(id):this.ids.add(id);return this.list();}list(){return [...this.ids];}clear(){this.ids.clear();}}
