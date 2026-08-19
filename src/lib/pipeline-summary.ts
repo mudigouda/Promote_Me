@@ -1,0 +1,1 @@
+export function pipelineSummary(items:Array<{stage:string;value?:number}>){return items.reduce<Record<string,{count:number;value:number}>>((a,x)=>{a[x.stage]??={count:0,value:0};a[x.stage].count++;a[x.stage].value+=Number(x.value||0);return a;},{});}
