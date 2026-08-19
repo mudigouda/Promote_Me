@@ -1,0 +1,1 @@
+export const settingsSchema={campaign:{requireApproval:true,requireConsent:true,blockOptedOut:true},notifications:{email:true,push:false},security:{sessionTimeoutMinutes:60,auditLogging:true},appearance:{compactMode:false}};
