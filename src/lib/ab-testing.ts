@@ -1,0 +1,2 @@
+export type Variant={id:string;weight:number};
+export function chooseVariant<T extends Variant>(variants:T[],seed:string){if(!variants.length)return null;const total=variants.reduce((s,v)=>s+Math.max(0,v.weight),0);if(total<=0)return variants[0];let hash=0;for(const c of seed)hash=(hash*31+c.charCodeAt(0))>>>0;let n=hash%total;for(const v of variants){n-=Math.max(0,v.weight);if(n<0)return v;}return variants[variants.length-1];}
