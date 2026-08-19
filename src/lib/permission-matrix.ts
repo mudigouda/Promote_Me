@@ -1,0 +1,2 @@
+export const permissionMatrix={OWNER:["*"] ,ADMIN:["contacts:read","contacts:write","campaigns:read","campaigns:write","settings:write"],AGENT:["contacts:read","contacts:write","campaigns:read","inbox:write","calls:write"],VIEWER:["contacts:read","campaigns:read","analytics:read"]} as const;
+export function can(role:keyof typeof permissionMatrix,permission:string){const p=permissionMatrix[role] as readonly string[];return p.includes("*")||p.includes(permission);}
