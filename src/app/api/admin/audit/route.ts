@@ -1,0 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+export async function GET(req:NextRequest){const businessId=req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;if(!businessId)return NextResponse.json({error:"businessId is required"},{status:400});return NextResponse.json({logs:await prisma.auditLog.findMany({where:{businessId},orderBy:{createdAt:"desc"},take:100})});}
+export async function POST(req:NextRequest){const b=await req.json(),businessId=b.businessId||process.env.DEFAULT_BUSINESS_ID;if(!businessId||!b.action)return NextResponse.json({error:"businessId and action are required"},{status:400});const log=await prisma.auditLog.create({data:{businessId,action:b.action,actorId:b.actorId,metadata:b.metadata||{}}});return NextResponse.json({log},{status:201});}
