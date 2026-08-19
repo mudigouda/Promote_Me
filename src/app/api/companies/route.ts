@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+const idFor=(req:NextRequest)=>req.nextUrl.searchParams.get("businessId")||process.env.DEFAULT_BUSINESS_ID;
+export async function GET(req:NextRequest){const id=idFor(req);if(!id)return NextResponse.json({error:"businessId is required"},{status:400});const rows=await prisma.company.findMany({where:{businessId:id},include:{contacts:true,deals:true},orderBy:{updatedAt:"desc"}});return NextResponse.json(rows)}
+export async function POST(req:NextRequest){const b=await req.json();const id=b.businessId||process.env.DEFAULT_BUSINESS_ID;if(!id||!b.name)return NextResponse.json({error:"businessId and name are required"},{status:400});const row=await prisma.company.create({data:{businessId:id,name:b.name,industry:b.industry,website:b.website,phone:b.phone,email:b.email,city:b.city,region:b.region,country:b.country,postalCode:b.postalCode,lat:b.lat,lng:b.lng}});return NextResponse.json(row,{status:201})}
