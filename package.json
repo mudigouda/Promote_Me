@@ -1,6 +1,7 @@
 {
-  "name":"promote-me","private":true,
-  "scripts":{"dev":"next dev","build":"next build","start":"next start","prisma":"prisma","check":"prisma validate && prisma generate && tsc --noEmit && next build"},
+  "name":"promote-me",
+  "private":true,
+  "scripts":{"dev":"next dev","build":"next build","start":"next start","prisma":"prisma","db:generate":"prisma generate","db:push":"prisma db push","db:seed":"tsx prisma/seed.ts","check":"prisma validate && prisma generate && tsc --noEmit && next build"},
   "dependencies":{"@prisma/adapter-pg":"latest","@prisma/client":"latest","bcryptjs":"latest","dotenv":"latest","lucide-react":"latest","next":"latest","pg":"latest","react":"latest","react-dom":"latest"},
-  "devDependencies":{"@types/node":"latest","@types/pg":"latest","@types/react":"latest","prisma":"latest","typescript":"latest"}
+  "devDependencies":{"@types/node":"latest","@types/pg":"latest","prisma":"latest","tsx":"latest","typescript":"latest"}
 }
