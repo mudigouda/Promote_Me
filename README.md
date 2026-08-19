@@ -1,23 +1,20 @@
-# Promote_Me
+# Promote_Me — Responsive Omnichannel Marketing Platform
 
-Omnichannel marketing platform starter for CRM, campaigns, WhatsApp/social/email adapters, calling hooks, location-aware segmentation, automations, AI assistant tools, and analytics.
+Mobile-first/web-responsive foundation for the planned cloud, multi-user, multi-tenant marketing + CRM platform.
 
-## Run
-1. `cp .env.example .env`
-2. `docker compose up -d`
-3. `npm install`
-4. `npm run dev`
-5. Open http://localhost:3000
+## Current UI
+- Responsive dashboard for desktop, tablet and mobile
+- Dashboard, Campaigns, Contacts, Business Finder, Inbox, Calls, Automations, AI Assistant, Analytics and Settings navigation
+- Campaign workflow and connected-channel overview
 
-The starter uses mock providers by default. Replace provider adapters with official APIs and configure credentials in environment variables. Do not use it for spam; obtain consent and comply with each platform's policies.
+## Run locally
+```cmd
+npm install
+npm run dev
+```
+Open http://localhost:3000
 
-## Included
-- Responsive Next.js/TypeScript admin UI
-- PostgreSQL + Prisma schema
-- Redis/BullMQ worker foundation
-- CRM/contact/location data model
-- Campaign/scheduling data model
-- Multi-channel adapter interfaces
-- AI assistant tool layer
-- Calling/telephony adapter interface
-- Docker Compose
+## Product direction
+Cloud multi-tenant accounts, team roles, CRM, location-aware business discovery, campaigns, WhatsApp/social/email/SMS, calling, unified inbox, automations, analytics, AI assistant, and PWA/mobile support.
+
+This branch is a UI foundation. Production authentication, tenant isolation, database persistence, official provider integrations, webhooks, encrypted credentials, consent controls and production security still need implementation.
