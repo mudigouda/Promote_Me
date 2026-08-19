@@ -1,0 +1,2 @@
+export type SettingsUpdate={campaignApproval?:boolean;requireConsent?:boolean;notifications?:boolean;sessionTimeoutMinutes?:number};
+export function validateSettings(input:SettingsUpdate){const errors:string[]=[];if(input.sessionTimeoutMinutes!==undefined&&(input.sessionTimeoutMinutes<5||input.sessionTimeoutMinutes>1440))errors.push("sessionTimeoutMinutes must be between 5 and 1440");return errors;}
