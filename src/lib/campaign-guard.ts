@@ -1,0 +1,1 @@
+export function canStartCampaign(input:{approved:boolean;scheduled:boolean;consentRequired:boolean;hasAudience:boolean}){if(!input.approved)return {ok:false,reason:"APPROVAL_REQUIRED"};if(!input.scheduled)return {ok:false,reason:"SCHEDULE_REQUIRED"};if(input.consentRequired&&!input.hasAudience)return {ok:false,reason:"CONSENT_AUDIENCE_REQUIRED"};return {ok:true as const};}
