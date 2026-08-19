@@ -1,15 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const campaignId = body.campaignId;
-  const contactId = body.contactId;
-  const event = body.event;
-  if (!campaignId || !event) return NextResponse.json({ error: "campaignId and event are required" }, { status: 400 });
-  const metric = await prisma.campaignMetric.findFirst({ where: { campaignId }, orderBy: { createdAt: "desc" } });
-  const field: Record<string,string> = { delivered:"delivered", read:"read", clicked:"clicked", replied:"replied", converted:"converted" };
-  if (metric && field[event]) await prisma.campaignMetric.update({ where: { id: metric.id }, data: { [field[event]]: { increment: 1 } } });
-  if (contactId) await prisma.campaignContact.updateMany({ where: { campaignId, contactId }, data: { status: event, ...(event === "delivered" ? { sentAt: new Date() } : {}) } });
-  return NextResponse.json({ ok: true });
-}
+const allowed=["queued","sent","delivered","read","clicked","replied","failed","converted","opted_out"];
+export async function POST(req:NextRequest){const body=await req.json(),campaignId=body.campaignId,contactId=body.contactId,event=body.event;if(!campaignId||!event)return NextResponse.json({error:"campaignId and event are required"},{status:400});if(!allowed.includes(event))return NextResponse.json({error:"Unsupported event"},{status:400});const metric=await prisma.campaignMetric.findFirst({where:{campaignId},orderBy:{createdAt:"desc"}});const field:Record<string,string>={delivered:"delivered",read:"read",clicked:"clicked",replied:"replied",converted:"converted"};if(metric&&field[event])await prisma.campaignMetric.update({where:{id:metric.id},data:{[field[event]]:{increment:1}}});if(contactId)await prisma.campaignContact.updateMany({where:{campaignId,contactId},data:{status:event,...(event==="delivered"?{sentAt:new Date()}: {})}});return NextResponse.json({accepted:true,event,campaignId,contactId,providerMessageId:body.providerMessageId||null});}
