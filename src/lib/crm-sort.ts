@@ -1,0 +1,1 @@
+export function sortBy<T>(rows:T[],key:keyof T,direction:"asc"|"desc"="asc"){return [...rows].sort((a,b)=>{const av=String(a[key]??"");const bv=String(b[key]??"");return direction==="asc"?av.localeCompare(bv):bv.localeCompare(av);});}
