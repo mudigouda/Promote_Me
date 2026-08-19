@@ -1,0 +1,7 @@
+{
+  "name": "promote-me",
+  "private": true,
+  "scripts": {"dev": "next dev", "build": "next build", "start": "next start", "prisma": "prisma"},
+  "dependencies": {"@prisma/client": "latest", "next": "latest", "react": "latest", "react-dom": "latest"},
+  "devDependencies": {"@types/node": "latest", "@types/react": "latest", "prisma": "latest", "typescript": "latest"}
+}
